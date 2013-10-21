@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Dynamic Loading w/ video.js</title>
+  
+  <script type='text/javascript' src='https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js' video.js ></script>
+  <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+  
+  
+  <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+  
+    
+      <link rel="stylesheet" type="text/css" href="http://vjs.zencdn.net/c/video-js.css">
+    
+    
+  
+    
+    
+      <script type='text/javascript' src="http://vjs.zencdn.net/c/video.js"></script>
+    
+  
+  <style type='text/css'>
+    .wrap            { margin:30px auto 10px; text-align:center }
+.container       { width:511px; height:382px; border:5px solid #ccc }
+p                { font: 10px/1.0em 'Helvetica',sans-serif; margin:20px }
+
+  </style>
+  
+
+
+<script type='text/javascript'>//<![CDATA[ 
+$(function(){
+$("input[type=button]").click(function() {
+    var $target         = "video_"+$(this).attr("rel");
+    var $content_path   = "https://dl.dropboxusercontent.com/u/27324220/video/";
+    var $vid_obj        = _V_("div_video");
+    
+    // hide the current loaded poster
+    $("img.vjs-poster").hide();
+    
+    $vid_obj.ready(function() {
+      // hide the video UI
+      $("#div_video_html5_api").hide();
+      // and stop it from playing
+      $vid_obj.pause();
+      // assign the targeted videos to the source nodes
+      $("video:nth-child(1)").attr("src",$content_path+$target+".mp4");
+      
+      console.log($content_path+$target+".mp4");
+      //$("video:nth-child(1)").attr("src","https://dl.dropboxusercontent.com/u/27324220/video/video1"+".mp4");
+      //									  https://dl.dropboxusercontent.com/u/27324220/video/video2.mp4
+      //$("video:nth-child(1)").attr("src",$content_path+$target+".ogv");
+      //$("video:nth-child(1)").attr("src",$content_path+$target+".webm");
+      // replace the poster source
+      $("img.vjs-poster").attr("src",$content_path+$target+".jpg").show();
+      //https://dl.dropboxusercontent.com/u/27324220/video/video_01.jpg
+      //$("img.vjs-poster").attr("src","https://dl.dropboxusercontent.com/s/eqw8nwo9izhi2or/michael-jordan"+".jpg").show();
+      																 
+      /* "https://dl.dropboxusercontent.com/s/ola86dm7u43822c/video2.jpg" */
+      // reset the UI states
+      $(".vjs-big-play-button").show();
+      $("#div_video").removeClass("vjs-playing").addClass("vjs-paused");
+      // load the new sources
+      $vid_obj.load();
+      $("#div_video_html5_api").show();
+    });
+});
+
+$("input[rel='01']").click();
+
+});//]]>  
+
+</script>
+
+
+</head>
+<body>
+  <section class="container wrap">
+  <video id="div_video" class="video-js vjs-default-skin" controls preload="auto" width="511" height="382" poster="https://dl.dropboxusercontent.com/u/27324220/video/video_01.jpg" data-setup="{}">  
+    <source src=""  type="video/mp4">
+    <source src=""  type="video/ogg">
+    <source src=""  type="video/webm">
+  </video>
+</section>
+
+<div class="wrap">
+  <input rel="01" type="button" value="load video 1">
+  <input rel="02" type="button" value="load video 2">
+  <input rel="03" type="button" value="load video 3">
+</div>
+  
+</body>
+
+
+</html>
+

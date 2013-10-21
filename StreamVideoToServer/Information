@@ -1,0 +1,90 @@
+
+Links:
+http://stackoverflow.com/questions/1244861/live-video-streaming-using-java
+http://www.javacodegeeks.com/2011/02/xuggler-tutorial-frames-capture-video.html
+http://www.xuggle.com/xuggler/downloads
+
+
+The best video playback/encoding library I have ever seen is ffmpeg. It plays everything you throw at it. (It is used by MPlayer.) It is written in C but I found some Java wrappers.
+
+FFMPEG-Java: A Java wrapper around ffmpeg using JNA.
+
+http://fmj-sf.net/ffmpeg-java/getting_started.php
+jffmpeg: This one integrates to JMF.
+http://sourceforge.net/projects/jffmpeg/
+
+
+You can do this today in Java with the Red5 media server from Flash. If you want to also decode and encode video in Java, you can use the Xuggler project.
+http://www.red5.org/
+http://www.xuggle.com/xuggler/downloads/
+
+
+
+http://stackoverflow.com/questions/8368300/live-video-streaming-between-server-and-client-using-java?rq=1
+/*
+ * This file is part of VLCJ.
+ *
+ * VLCJ is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * VLCJ is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with VLCJ.  If not, see <http://www.gnu.org/licenses/>.
+ * 
+ * Copyright 2009, 2010, 2011 Caprica Software Limited.
+ */
+
+package uk.co.caprica.vlcj.test.streaming;
+
+import uk.co.caprica.vlcj.player.MediaPlayerFactory;
+import uk.co.caprica.vlcj.player.headless.HeadlessMediaPlayer;
+import uk.co.caprica.vlcj.test.VlcjTest;
+
+/**
+ * An example of how to stream a media file over HTTP.
+ * <p>
+ * The client specifies an MRL of <code>http://127.0.0.1:5555</code>
+ */
+public class StreamHttp extends VlcjTest {
+
+  public static void main(String[] args) throws Exception {
+    if(args.length != 1) {
+      System.out.println("Specify a single MRL to stream");
+      System.exit(1);
+    }
+
+    String media = args[0];
+    String options = formatHttpStream("127.0.0.1", 5555);
+
+    System.out.println("Streaming '" + media + "' to '" + options + "'");
+
+    MediaPlayerFactory mediaPlayerFactory = new MediaPlayerFactory(args);
+    HeadlessMediaPlayer mediaPlayer = mediaPlayerFactory.newHeadlessMediaPlayer();
+    mediaPlayer.playMedia(media, options);
+
+    // Don't exit
+    Thread.currentThread().join();
+  }
+
+  private static String formatHttpStream(String serverAddress, int serverPort) {
+    StringBuilder sb = new StringBuilder(60);
+    sb.append(":sout=#duplicate{dst=std{access=http,mux=ts,");
+    sb.append("dst=");
+    sb.append(serverAddress);
+    sb.append(':');
+    sb.append(serverPort);
+    sb.append("}}");
+    return sb.toString();
+  }
+}
+
+
+
+http://www.javacodegeeks.com/2011/02/xuggler-tutorial-frames-capture-video.html
+

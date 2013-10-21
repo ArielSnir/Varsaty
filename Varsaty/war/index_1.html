@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<!-- http://jsfiddle.net/NWbUG/1003/ -->
+<head>
+<title>Video.js | HTML5 Video Player</title>
+<!-- Chang URLs to wherever Video.js files will be hosted -->
+<link href="video-js.css" rel="stylesheet" type="text/css">
+<link href="my.css" rel="stylesheet" type="text/css">
+<!-- video.js must be in the <head> for older IEs to work. -->
+<script src="video.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<!-- Unless using the CDN hosted version, update the URL to the Flash SWF -->
+<!--
+<script>
+	videojs.options.flash.swf = "video-js.swf";
+</script>
+-->
+
+<script>
+
+
+
+videojs.options.flash.swf = "video-js.swf";
+
+function displayDate() {
+	document.getElementById("demo").innerHTML = Date();
+}
+
+function init(){
+
+	$("input[type=button]").click(function() {
+		
+		//alerting & console
+		console.log('click method was called');
+		//alert('click method was called');
+		
+		var $target         = "testvid_"+$(this).attr("rel");
+		var $content_path   = "http://dev.swinginsam.com/_files/";
+		var $vid_obj        = _V_("div_video");
+		
+		// hide the current loaded poster
+		$("img.vjs-poster").hide();
+		
+		$vid_obj.ready(function() {
+		  // hide the video UI
+		  $("#div_video_html5_api").hide();
+		  // and stop it from playing
+		  $vid_obj.pause();
+		  // assign the targeted videos to the source nodes
+		  //$("video:nth-child(1)").attr("src","https://showbox-tr.dropbox.com/transcode_video/t/v56gitlw9l39aw3/Michael%20Jordan%20Famous%20Eyes%20Closed%20Free%20Throw%20to%20Mutombo%20In%20Full.mp4");
+		  $("video:nth-child(1)").attr("src",$content_path+$target+".mp4");
+		  $("video:nth-child(1)").attr("src",$content_path+$target+".ogv");
+		  $("video:nth-child(1)").attr("src",$content_path+$target+".webm");
+		  // replace the poster source
+		  $("img.vjs-poster").attr("src",$content_path+$target+".jpg").show();
+		  //$("img.vjs-poster").attr("src","https://dl.dropboxusercontent.com/s/eqw8nwo9izhi2or/michael-jordan.jpg").show();
+		  // reset the UI states
+		  $(".vjs-big-play-button").show();
+		  $("#div_video").removeClass("vjs-playing").addClass("vjs-paused");
+		  // load the new sources
+		  $vid_obj.load();
+		  $("#div_video_html5_api").show();
+		});
+	});
+
+	$("input[rel='01']").click();
+}
+	
+</script>
+
+
+</head>
+<body onload="init()">
+
+<p id="demo"></p>
+	<button type="button" onclick="displayDate()">Display Date</button>
+
+<section class="container wrap">
+  <video id="div_video" class="video-js vjs-default-skin" controls preload="auto" width="511" height="382" poster="http://dev.swinginsam.com/_files/testvid_01.jpg" data-setup="{}">  
+    <source src=""  type="video/mp4">
+    <source src=""  type="video/ogg">
+    <source src=""  type="video/webm">
+  </video>
+</section>
+
+<div class="wrap" >
+  <input rel="01" type="button" value="load video 1">
+  <input rel="02" type="button" value="load video 2">
+  <input rel="03" type="button" value="load video 3">
+</div>
+
+
+
+</body>
+</html>
